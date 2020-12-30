@@ -15,8 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
@@ -27,6 +29,8 @@ import com.flavioreboucassantos.minhasfinancas.model.enums.TipoLancamento;
 @Table(name = "lancamento", schema = "financas")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Lancamento {
 
 	@Id
