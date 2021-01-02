@@ -16,9 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.flavioreboucassantos.minhasfinancas.model.entity.Usuario;
 
 @ExtendWith(SpringExtension.class)
-@ActiveProfiles("test")
 @DataJpaTest // executa ROLLBACK ao terminar os @Test
-@AutoConfigureTestDatabase(replace = Replace.NONE)
+@AutoConfigureTestDatabase(replace = Replace.NONE) // para não sobreescrever as config. do ambiente de test
+@ActiveProfiles("test")
 public class UsuarioRepositoryTest {
 
 	@Autowired

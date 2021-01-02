@@ -26,10 +26,10 @@ import com.flavioreboucassantos.minhasfinancas.service.impl.UsuarioServiceImpl;
 
 public class UsuarioServiceTest {
 
-	@SpyBean
+	@SpyBean // Para a classe em test pois precisa chamar os metodos reais da classe
 	UsuarioServiceImpl service;
 
-	@MockBean
+	@MockBean // Para simular o comportamento do repository nas chamadas dentro do serviço
 	UsuarioRepository repository;
 
 	@Test
