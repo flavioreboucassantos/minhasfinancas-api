@@ -61,6 +61,13 @@ public class LancamentoResource {
 		return ResponseEntity.ok(lancamentos);
 	}
 
+	@GetMapping("{id}")
+	public ResponseEntity obterLancamento(@PathVariable("id") Long id) {
+		return service.obterPorId(id)
+				.map(lancamento -> new ResponseEntity(converter(lancamento), HttpStatus.OK))
+				.orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND));
+	}
+
 	@PostMapping
 	public ResponseEntity salvar(@RequestBody LancamentoDTO dto) {
 		try {
@@ -90,16 +97,17 @@ public class LancamentoResource {
 	public ResponseEntity atualizarStatus(@PathVariable("id") Long id, @RequestBody AtualizaStatusDTO dto) {
 		return service.obterPorId(id).map(entity -> {
 			StatusLancamento statusSelecionado = StatusLancamento.valueOf(dto.getStatus());
-			if(statusSelecionado == null) {
-				return ResponseEntity.badRequest().body("Não foi possível atualizar o status do lançamento, envie um status válido.");
-			}			
+			if (statusSelecionado == null) {
+				return ResponseEntity.badRequest()
+						.body("Não foi possível atualizar o status do lançamento, envie um status válido.");
+			}
 			try {
 				entity.setStatus(statusSelecionado);
 				service.atualizar(entity);
 				return ResponseEntity.ok(entity);
 			} catch (RegraNegocioException e) {
-				return ResponseEntity.badRequest().body(e.getMessage());				
-			}			
+				return ResponseEntity.badRequest().body(e.getMessage());
+			}
 		}).orElseGet(() -> new ResponseEntity("Lançamento não encontrado na Base de Dados.", HttpStatus.BAD_REQUEST));
 	}
 
@@ -109,6 +117,19 @@ public class LancamentoResource {
 			service.deletar(entidade);
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}).orElseGet(() -> new ResponseEntity("Lançamento não encontrado na Base de Dados.", HttpStatus.BAD_REQUEST));
+	}
+
+	private LancamentoDTO converter(Lancamento lancamento) {
+		return LancamentoDTO.builder()
+				.id(lancamento.getId())
+				.descricao(lancamento.getDescricao())
+				.valor(lancamento.getValor())
+				.mes(lancamento.getMes())
+				.ano(lancamento.getAno())
+				.status(lancamento.getStatus().name())
+				.tipo(lancamento.getTipo().name())
+				.usuario(lancamento.getUsuario().getId())
+				.build();
 	}
 
 	private Lancamento converter(LancamentoDTO dto) {
