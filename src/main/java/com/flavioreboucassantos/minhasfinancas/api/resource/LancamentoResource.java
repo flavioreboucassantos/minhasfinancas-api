@@ -51,7 +51,6 @@ public class LancamentoResource {
 		lancamentoFiltro.setMes(mes);
 		if (tipo != null) {
 			try {
-
 				lancamentoFiltro.setTipo(TipoLancamento.valueOf(tipo));
 			} catch (IllegalArgumentException e) {
 			}
